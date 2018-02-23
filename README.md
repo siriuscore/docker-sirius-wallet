@@ -1,6 +1,10 @@
 # Sirius Wallet
 
+[Sirius Homepage](https://getsirius.io)
+
 Docker alpine sirius wallet with the ability to stake and resume on reboot.
+
+![Donate Sirius](https://img.shields.io/badge/Donate_Sirius-SgodXRRCJLRuj1S8RW5wABzjdDRyFGR2W1-667A96.svg)
 
 ### New Wallet
 1. Make a directory to persist wallet
@@ -35,6 +39,7 @@ Staking is delayed 10 seconds to ensure siriusd is running
 ```bash
 docker exec -it sirius-wallet sirius-cli getinfo
 docker exec -it sirius-wallet sirius-cli getstakinginfo
+docker exec -it sirius-wallet sirius-cli getaddressesbyaccount ""
 ```
 
  ##### Watch Staking activity
