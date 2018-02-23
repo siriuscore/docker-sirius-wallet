@@ -6,7 +6,7 @@ siriusd -daemon
 stake=$(echo $STAKING | tr -s '[:upper:]' '[:lower:]')
 if [ $stake == "true" ]; then
     if [ -z "$PASSPHRASE" ]; then
-        echo "ERROR: PASSWORD required to stake"
+        echo "ERROR: PASSPHRASE required to stake"
         exit 1
     else
         sleep 10s
