@@ -9,7 +9,7 @@ if [ $stake == "true" ]; then
         echo "ERROR: PASSWORD required to stake"
         exit 1
     else
-        sleep 30s
+        sleep 10s
         sirius-cli walletpassphrase $PASSWORD 999999 true
         echo "wallet is staking"
     fi
