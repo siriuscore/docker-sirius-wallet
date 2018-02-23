@@ -25,7 +25,7 @@ Docker alpine sirius wallet with the ability to stake and resume on reboot.
 1. Remove any running sirius wallet
     * `docker rm sirius-wallet -f`
 2. Start wallet with staking variables
-    * `docker run -d -e STAKING=true -e PASSWORD={PASSPHRASE} -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet:0.3`
+    * `docker run -d -e STAKING=true -e PASSPHRASE={PASSPHRASE} -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet:0.3`
 
 Staking is delayed 10 seconds to ensure siriusd is running
 

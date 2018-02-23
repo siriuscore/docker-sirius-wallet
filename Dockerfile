@@ -61,7 +61,7 @@ ENV SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
 ENV PATH=${SIRIUS_PREFIX}/bin:$PATH
 
 ENV STAKING=false
-ENV PASSWORD=''
+ENV PASSPHRASE=''
 
 COPY --from=sirius-core /opt /opt
 COPY docker-entrypoint.sh /entrypoint.sh
