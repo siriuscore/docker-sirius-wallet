@@ -48,11 +48,11 @@ RUN apk update &&\
         --disable-ccache &&\
     make -j$(nproc) &&\
     make install &&\
-    strip ${SIRIUS_PREFIX}/bin/sirius-cli &&\
-    strip ${SIRIUS_PREFIX}/bin/sirius-tx &&\
-    strip ${SIRIUS_PREFIX}/bin/siriusd &&\
-    strip ${SIRIUS_PREFIX}/lib/libbitcoinconsensus.a &&\
-    strip ${SIRIUS_PREFIX}/lib/libbitcoinconsensus.so.0.0.0
+    strip ${SIRIUS_PREFIX}/bin/sirius-cli \
+        ${SIRIUS_PREFIX}/bin/sirius-tx \
+        ${SIRIUS_PREFIX}/bin/siriusd \
+        ${SIRIUS_PREFIX}/lib/libbitcoinconsensus.a \
+        ${SIRIUS_PREFIX}/lib/libbitcoinconsensus.so.0.0.0
 
 # Sirius Wallet
 FROM alpine
@@ -79,5 +79,3 @@ RUN apk update &&\
 VOLUME ["/root/.sirius"]
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-CMD ["siriusd"]

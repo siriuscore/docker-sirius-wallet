@@ -1,8 +1,7 @@
 #!/bin/sh
 set -e
 
-$@ &
-echo "Started siriusd"
+siriusd &
 
 stake=$(echo $STAKING | tr -s '[:upper:]' '[:lower:]')
 if [ $stake == "true" ]; then
