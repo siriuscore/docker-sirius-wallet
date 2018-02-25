@@ -10,9 +10,12 @@ RUN apk update &&\
     wget https://download.oracle.com/berkeley-db/${BERKELEYDB_VERSION}.tar.gz &&\
     tar -xzf *.tar.gz &&\
     sed s/__atomic_compare_exchange/__atomic_compare_exchange_db/g -i ${BERKELEYDB_VERSION}/dbinc/atomic.h &&\
-    mkdir -p ${BERKELEYDB_PREFIX} &&\
     cd /${BERKELEYDB_VERSION}/build_unix &&\
-    ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=${BERKELEYDB_PREFIX} &&\
+    ../dist/configure \
+        --prefix=${BERKELEYDB_PREFIX} \
+        --enable-cxx \
+        --disable-shared \
+        --with-pic  &&\
     make -j$(nproc) &&\
     make install
 
@@ -29,7 +32,7 @@ RUN apk update &&\
     apk upgrade &&\
     apk add --no-cache \
         autoconf automake libtool build-base boost-dev \
-        chrpath file libevent-dev libressl-dev linux-headers \
+        chrpath file libevent-dev libressl-dev gnutls-dev \
         protobuf-dev zeromq-dev jsoncpp-dev &&\
     wget https://github.com/${SIRIUS_REPO}/archive/${SIRIUS_VERSION}.tar.gz &&\
     tar -xzf *.tar.gz &&\
@@ -68,7 +71,9 @@ COPY docker-entrypoint.sh /entrypoint.sh
 
 RUN apk update &&\
     apk upgrade &&\
-    apk --no-cache add boost boost-random boost-program_options libevent libressl libzmq jsoncpp &&\
+    apk --no-cache add \
+        boost boost-random boost-program_options \
+        libevent libressl libzmq jsoncpp &&\
     chmod +x /entrypoint.sh
 
 VOLUME ["/root/.sirius"]
