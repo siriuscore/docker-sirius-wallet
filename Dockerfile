@@ -32,7 +32,7 @@ RUN apk update &&\
     apk upgrade &&\
     apk add --no-cache \
         autoconf automake libtool build-base boost-dev \
-        chrpath file libevent-dev libressl-dev gnutls-dev \
+        chrpath file libevent-dev libressl-dev \
         protobuf-dev zeromq-dev jsoncpp-dev &&\
     wget https://github.com/${SIRIUS_REPO}/archive/${SIRIUS_VERSION}.tar.gz &&\
     tar -xzf *.tar.gz &&\
