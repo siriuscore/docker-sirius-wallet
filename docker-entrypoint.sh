@@ -1,11 +1,12 @@
 #!/bin/sh
 set -e
 
-siriusd -daemon
+$@ &
+echo "Started siriusd"
 
 stake=$(echo $STAKING | tr -s '[:upper:]' '[:lower:]')
 if [ $stake == "true" ]; then
-    if [ -z "$PASSPHRASE" ]; then
+    if [ -z $PASSPHRASE ]; then
         echo "ERROR: PASSPHRASE required to stake"
         exit 1
     else
@@ -15,4 +16,4 @@ if [ $stake == "true" ]; then
     fi
 fi
 
-exec "$@"
+wait

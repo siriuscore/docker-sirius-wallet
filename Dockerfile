@@ -80,4 +80,4 @@ VOLUME ["/root/.sirius"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["siriusd"]
