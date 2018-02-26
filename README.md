@@ -27,7 +27,13 @@ Docker alpine sirius wallet with the ability to stake and resume on reboot.
 
 ### Stake Wallet (Manual)
 1. Run staking command
-    * `docker exec -it sirius-wallet sirius-cli walletpassphrase {PASSPHRASE} 999999 true`
+    * ```bash
+      docker exec -it sirius-wallet sirius-cli -stdin walletpassphrase
+      [type password and hit enter]
+      [type time to remain unlocked and hit enter]
+      true
+      [Press CTRL+D to complete the input sequence]
+      ```
 
 **This must the done everytime the container is restarted (ie. system boot)**
 
