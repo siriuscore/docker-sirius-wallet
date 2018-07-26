@@ -23,7 +23,7 @@ RUN apk update &&\
 FROM alpine as sirius-core
 
 ENV SIRIUS_REPO=siriuscore/sirius
-ENV SIRIUS_VERSION=0.3
+ENV SIRIUS_VERSION=0.15.2
 ENV SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
 
 COPY --from=berkeleydb /opt /opt
@@ -59,7 +59,7 @@ FROM alpine
 
 LABEL maintainer="David Clutter <cluttered.code@gmail.com>"
 
-ENV SIRIUS_VERSION=0.3
+ENV SIRIUS_VERSION=0.15.2
 ENV SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
 ENV PATH=${SIRIUS_PREFIX}/bin:$PATH
 
