@@ -37,7 +37,7 @@ Docker alpine sirius wallet with the ability to stake and resume on reboot.
 
 **This must the done everytime the container is restarted (ie. system boot)**
 
-### Stake Wallet (Automatic) - INSECURE, UPDATE SOON!!
+### Stake Wallet (Automatic) - INSECURE (password visible in docker container)
 1. Remove any running sirius wallet
     * `docker rm sirius-wallet -f`
 2. Start wallet with staking variables
