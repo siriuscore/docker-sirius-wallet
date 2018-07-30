@@ -10,7 +10,7 @@ if [ $stake == "true" ]; then
         exit 1
     else
         sleep 10s
-        sirius-cli walletpassphrase $PASSPHRASE 9999999999 true
+        sirius-cli walletpassphrase $PASSPHRASE 999999999 true
         echo "wallet is staking"
     fi
 fi
