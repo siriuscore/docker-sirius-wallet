@@ -1,6 +1,6 @@
 # Sirius Wallet
 
-[Sirisu Docker Hub](https://hub.docker.com/r/siriuscore/sirius-wallet)
+[Sirius Docker Hub](https://hub.docker.com/r/siriuscore/sirius-wallet)
 
 [Sirius Homepage](https://getsirius.io)
 
