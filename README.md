@@ -1,6 +1,9 @@
 # Sirius Wallet
 
+[Sirisu Docker Hub](https://hub.docker.com/r/siriuscore/sirius-wallet)
+
 [Sirius Homepage](https://getsirius.io)
+
 
 Docker alpine sirius wallet with the ability to stake and resume on reboot.
 
@@ -10,7 +13,7 @@ Docker alpine sirius wallet with the ability to stake and resume on reboot.
 1. Make a directory to persist wallet
     * `mkdir /path/to/sirius`
 2. Start docker to create wallet
-    * `docker run -d -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet`
+    * `docker run -d -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet siriuscore/sirius-wallet`
 3. Encrypt wallet
     * `docker exec -it sirius-wallet sirius-cli encryptwallet {PASSPHRASE}`
 4. Backup wallet (Don't run in container)
@@ -23,7 +26,7 @@ Docker alpine sirius wallet with the ability to stake and resume on reboot.
 2. Put wallet.dat backup in directory
     * `cp -p /path/to/backup/sirius-wallet.dat /path/to/sirius/wallet.dat`
 3. Start docker to run wallet
-    * `docker run -d -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet`
+    * `docker run -d -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet siriuscore/sirius-wallet`
 
 ### Stake Wallet (Manual)
 1. Run staking command
@@ -41,7 +44,7 @@ Docker alpine sirius wallet with the ability to stake and resume on reboot.
 1. Remove any running sirius wallet
     * `docker rm sirius-wallet -f`
 2. Start wallet with staking variables
-    * `docker run -d -e STAKING=true -e PASSPHRASE={PASSPHRASE} -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet`
+    * `docker run -d -e STAKING=true -e PASSPHRASE={PASSPHRASE} -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet siriuscore/sirius-wallet`
 
 Staking is delayed 10 seconds to ensure siriusd is running
 
