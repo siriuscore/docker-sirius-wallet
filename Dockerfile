@@ -71,7 +71,7 @@ ENV PATH=${SIRIUS_PREFIX}/bin:$PATH \
 COPY --from=sirius-core /opt /opt
 COPY docker-entrypoint.sh /entrypoint.sh
 
-RUN apk --no-cache add \
+RUN apk add --no-cache \
         boost boost-random boost-program_options \
         libevent libressl libzmq jsoncpp &&\
     chmod +x /entrypoint.sh
