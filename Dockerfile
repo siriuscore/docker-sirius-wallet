@@ -1,8 +1,8 @@
 # Berkeley DB
 FROM alpine as berkeleydb
 
-ENV BERKELEYDB_VERSION=db-4.8.30.NC
-ENV BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
+ENV BERKELEYDB_VERSION=db-4.8.30.NC \
+    BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
 
 RUN apk update &&\
     apk upgrade --no-cache &&\
@@ -22,9 +22,9 @@ RUN apk update &&\
 # Sirius Core
 FROM alpine as sirius-core
 
-ENV SIRIUS_REPO=siriuscore/sirius
-ENV SIRIUS_VERSION=0.4-bugfix
-ENV SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
+ENV SIRIUS_VERSION=0.4-bugfix \
+    SIRIUS_REPO=siriuscore/sirius \
+    SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
 
 COPY --from=berkeleydb /opt /opt
 
@@ -59,12 +59,11 @@ FROM alpine
 
 LABEL maintainer="David Clutter <cluttered.code@gmail.com>"
 
-ENV SIRIUS_VERSION=0.4-bugfix
-ENV SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
-ENV PATH=${SIRIUS_PREFIX}/bin:$PATH
-
-ENV STAKING=false
-ENV PASSPHRASE=''
+ENV SIRIUS_VERSION=0.4-bugfix \
+    SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION} \
+    PATH=${SIRIUS_PREFIX}/bin:$PATH \
+    STAKING=false \
+    PASSPHRASE=''
 
 COPY --from=sirius-core /opt /opt
 COPY docker-entrypoint.sh /entrypoint.sh
