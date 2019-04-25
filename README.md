@@ -1,60 +1,119 @@
-# Sirius Wallet
+[Sirius](https://getsirius.io) Docker Wallet Features:
 
-[Sirius Homepage](https://getsirius.io)
+ * The fastest and most compact way to run a wallet
+ * Automatic startup and staking on system reboot
+ * container image size: ~45MB
 
-Docker alpine sirius wallet with the ability to stake and resume on reboot.
+Find us at:
+* [Slack](https://slack.getsirius.io)
+* [Discord](https://discord.getsirius.io)
+* [Telegram](https://telegram.getsirius.io/)
+
+# [siriuscore/sirius-wallet](https://github.com/siriuscore/docker-sirius-wallet)
+
+[Sirius](https://getsirius.io) is a next-generation smart contract platform based on Bitcoin and Ethereum's EVM.
 
 **Donate Sirius:** SgodXRRCJLRuj1S8RW5wABzjdDRyFGR2W1
 
-### New Wallet
-1. Make a directory to persist wallet
-    * `mkdir /path/to/sirius`
-2. Start docker to create wallet
-    * `docker run -d -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet`
-3. Encrypt wallet
-    * `docker exec -it sirius-wallet sirius-cli encryptwallet {PASSPHRASE}`
-4. Backup wallet (Don't run in container)
-    * `cp -p /path/to/sirius/wallet.dat /path/to/backup/sirius-wallet.dat`
-5. Store passphrase somewhere so you don't forget it
+## First Run Requirement - Securing Wallet
+after you start a **NEW** wallet for the first time run the following to manually set the passphrase:
 
-### Restore Wallet
-1. Make a directory to persist wallet
-    * `mkdir /path/to/sirius`
-2. Put wallet.dat backup in directory
-    * `cp -p /path/to/backup/sirius-wallet.dat /path/to/sirius/wallet.dat`
-3. Start docker to run wallet
-    * `docker run -d -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet`
+```docker exec -it sirius-wallet sirius-cli encryptwallet <YOUR_PASSPHRASE>```
 
-### Stake Wallet (Manual)
-1. Run staking command
-    * ```bash
-      docker exec -it sirius-wallet sirius-cli -stdin walletpassphrase
-      [type password and hit enter]
-      [type time to remain unlocked and hit enter]
-      true
-      [Press CTRL+D to complete the input sequence]
-      ```
+## Usage
 
-**This must the done everytime the container is restarted (ie. system boot)**
+Here are some example snippets to help you get started creating a container.
 
-### Stake Wallet (Automatic) - password visible in docker container
-1. Remove any running sirius wallet
-    * `docker rm sirius-wallet -f`
-2. Start wallet with staking variables
-    * `docker run -d -e STAKING=true -e PASSPHRASE={PASSPHRASE} -v /path/to/sirius:/root/.sirius --restart=always --name=sirius-wallet clutteredcode/sirius-wallet`
-
-Staking is delayed 10 seconds to ensure siriusd is running
-
-**This will begin staking on container start (ie. system boot)**
-
-### Execute Commands
-```bash
-docker exec -it sirius-wallet sirius-cli getinfo
-docker exec -it sirius-wallet sirius-cli getstakinginfo
-docker exec -it sirius-wallet sirius-cli getaddressesbyaccount ""
+### docker
+```
+docker run \
+  -d \
+  --name=sirius-wallet \
+  -e STAKING=true \
+  -e PASSPHRASE=<YOUR_PASSPHRASE> \
+  -v <path/to/sirius>:/root/.sirius \
+  --restart always \
+  siriuscore/sirius-wallet
 ```
 
- ##### Watch Staking activity
-```bash
-watch "docker exec -it sirius-wallet sirius-cli getstakinginfo && docker exec -it sirius-wallet sirius-cli getwalletinfo"
+### docker-compose
+
+Compatible with docker-compose v3.7 schemas.
 ```
+version: '3.7'
+
+services:
+  sirius-wallet:
+    image: siriuscore/sirius-wallet
+    container_name: sirius-wallet
+    environment:
+      STAKING: 'true'
+      PASSPHRASE: <YOUR_PASSPHRASE>
+    volumes:
+      - <path/to/sirius>:/root/.sirius
+    restart: always
+```
+
+
+## Required Parameters
+
+Container images are configured using parameters passed at runtime (such as those above). These parameters are separated by a colon and indicate `<external>:<internal>` respectively.
+
+For example, `-v /home/user/sirius-wallet:/root/.sirius` would bind the `/root/.sirius` directory inside the container to the `/home/user/sirius-wallet` directory on the host, outside the container.
+
+| Parameter | Function |
+| :----: | --- |
+| `-v /root/.sirius` | location to persist wallet data |
+
+*This is where a wallet.dat will be generated or consumed*
+
+**wallet.dat** should be saved after it is generated to an external location for wallet recovery
+
+
+## Optional Parameters
+
+**ONLY USE AFTER PASSPHRASE MANUALLY SET AS DESCRIBED ABOVE**
+
+| Parameter | Function | Default |
+| :----: | --- | :----: |
+| `-e STAKING=true` | if you want the wallet to stake | false |
+| `-e PASSPHRASE=<YOUR_PASSPHRASE>` | passphrase used to secure the wallet, **Should always provided** | '' |
+
+*Special note* - If `STAKING=true` a `PASSPHRASE` must also be specified
+
+
+## Support Info
+
+* Shell access whilst the container is running
+  * `docker exec -it sirius-wallet /bin/ash`
+* To monitor the logs of the container in realtime
+  * `docker logs -f sirius-wallet`
+* Wallet commands
+  * `docker exec -it sirius-wallet sirius-cli getinfo`
+  * `docker exec -it sirius-wallet sirius-cli getstakinginfo`
+  * `docker exec -it sirius-wallet sirius-cli getaddressesbyaccount ""`
+* Watch staking activity
+  * `watch "docker exec -it sirius-wallet sirius-cli getstakinginfo && docker exec -it sirius-wallet sirius-cli getwalletinfo"`
+* container version number 
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' sirius-wallet`
+* image version number
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' siriuscore/sirius-wallet`
+
+
+## Updating Info 
+  
+Below are the instructions for updating containers:  
+  
+### Via Docker Run
+* Update the image: `docker pull siriuscore/sirius-wallet`
+* Stop the running container: `docker stop sirius-wallet`
+* Delete the container: `docker rm sirius-wallet`
+* Run a new container with the same docker run parameters as instructed above (if mapped correctly to a host folder, your `/root/.sirius` folder and settings will be preserved)
+* You can also remove the old dangling images: `docker image prune`
+
+### Via Docker Compose
+* Update all images: `docker-compose pull`
+  * or update a single image: `docker-compose pull sirius-wallet`
+* Let compose update all containers as necessary: `docker-compose up -d`
+  * or update a single container: `docker-compose up -d sirius-wallet`
+* You can also remove the old dangling images: `docker image prune`
