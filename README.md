@@ -2,7 +2,7 @@
 
  * The fastest and most compact way to run a wallet
  * Automatic startup and staking on system reboot
- * container size: ~45MB
+ * container image size: ~45MB
 
 Find us at:
 * [Slack](https://slack.getsirius.io)
