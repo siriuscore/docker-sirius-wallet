@@ -1,12 +1,21 @@
-# Berkeley DB
-FROM alpine as berkeleydb
+# Base
+FROM alpine as base
 
-ENV BERKELEYDB_VERSION=db-4.8.30.NC \
-    BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
+ENV SIRIUS_VERSION=0.4-bugfix
+ENV SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
 
 RUN apk update &&\
-    apk upgrade --no-cache &&\
-    apk --no-cache add autoconf automake build-base libressl &&\
+    apk upgrade --no-cache
+
+
+# Berkeley DB
+FROM base as berkeley-db
+
+ENV BERKELEYDB_VERSION=db-4.8.30.NC
+ENV BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
+
+RUN apk add --no-cache \
+        autoconf automake build-base libressl &&\
     wget https://download.oracle.com/berkeley-db/${BERKELEYDB_VERSION}.tar.gz &&\
     tar -xzf *.tar.gz &&\
     sed s/__atomic_compare_exchange/__atomic_compare_exchange_db/g -i ${BERKELEYDB_VERSION}/dbinc/atomic.h &&\
@@ -20,17 +29,13 @@ RUN apk update &&\
     make install
 
 # Sirius Core
-FROM alpine as sirius-core
+FROM base as sirius-core
 
-ENV SIRIUS_VERSION=0.4-bugfix \
-    SIRIUS_REPO=siriuscore/sirius \
-    SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION}
+ENV SIRIUS_REPO=siriuscore/sirius
 
-COPY --from=berkeleydb /opt /opt
+COPY --from=berkeley-db /opt /opt
 
-RUN apk update &&\
-    apk upgrade --no-cache &&\
-    apk add --no-cache \
+RUN apk add --no-cache \
         autoconf automake libtool build-base boost-dev \
         chrpath file libevent-dev libressl-dev \
         protobuf-dev zeromq-dev jsoncpp-dev &&\
@@ -55,22 +60,18 @@ RUN apk update &&\
         ${SIRIUS_PREFIX}/lib/libbitcoinconsensus.so.0.0.0
 
 # Sirius Wallet
-FROM alpine
+FROM base
 
 LABEL maintainer="David Clutter <cluttered.code@gmail.com>"
 
-ENV SIRIUS_VERSION=0.4-bugfix \
-    SIRIUS_PREFIX=/opt/sirius-${SIRIUS_VERSION} \
-    PATH=${SIRIUS_PREFIX}/bin:$PATH \
+ENV PATH=${SIRIUS_PREFIX}/bin:$PATH \
     STAKING=false \
     PASSPHRASE=''
 
 COPY --from=sirius-core /opt /opt
 COPY docker-entrypoint.sh /entrypoint.sh
 
-RUN apk update &&\
-    apk upgrade --no-cache &&\
-    apk --no-cache add \
+RUN apk add --no-cache \
         boost boost-random boost-program_options \
         libevent libressl libzmq jsoncpp &&\
     chmod +x /entrypoint.sh
