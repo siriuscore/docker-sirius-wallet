@@ -77,7 +77,7 @@ For example, `-v /home/user/sirius-wallet:/root/.sirius` would bind the `/root/.
 | Parameter | Function | Default |
 | :----: | --- | :----: |
 | `-e STAKING=true` | if you want the wallet to stake | false |
-| `-e PASSPHRASE=<YOUR_PASSPHRASE>` | passphrase used to secure the wallet, **Should always provided** | '' |
+| `-e PASSPHRASE=<YOUR_PASSPHRASE>` | passphrase used to secure the wallet, **Should always provide** | '' |
 
 *Special note* - If `STAKING=true` a `PASSPHRASE` must also be specified
 
