@@ -9,7 +9,7 @@ RUN apk update &&\
 
 
 # Berkeley DB
-FROM base as berkeleydb
+FROM base as berkeley-db
 
 ENV BERKELEYDB_VERSION=db-4.8.30.NC
 ENV BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
@@ -33,7 +33,7 @@ FROM base as sirius-core
 
 ENV SIRIUS_REPO=siriuscore/sirius
 
-COPY --from=berkeleydb /opt /opt
+COPY --from=berkeley-db /opt /opt
 
 RUN apk add --no-cache \
         autoconf automake libtool build-base boost-dev \
